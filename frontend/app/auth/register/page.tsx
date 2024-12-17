@@ -1,31 +1,47 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import CustomFormField, { FormFieldType } from "@/components/CustomFormField";
-import { form } from "@/components/ValidateForm";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import SubmitButton from "@/components/SubmitButton";
 import { login } from "@/lib/server";
-import { useRouter } from "next/router";
-import { formData } from "@/components/ValidateForm";
+import { useRouter } from "next/navigation";
+import { formData, formSchema } from "@/components/ValidateForm";
+
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const handleLogin = async (data: formData) => {
+    console.log(data);
     try {
       setIsLoading(true);
       await login(data.email, data.password);
       router.push("/dashboard");
-    } catch (error) {}
-
-    setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleLogin)}>
+        <h1>Register</h1>
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="email"

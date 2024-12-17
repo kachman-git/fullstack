@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+"use client"
 import { Control } from "react-hook-form";
 
 import {

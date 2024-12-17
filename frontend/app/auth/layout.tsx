@@ -6,14 +6,7 @@ const Authlayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return (
-    <div className="container relative">
-      <div className="absolute top-2 right-3">
-        <ModeToggle />
-      </div>
-      {children}
-    </div>
-  );
+  return <div className="container relative">{children}</div>;
 };
 
 export default Authlayout;
