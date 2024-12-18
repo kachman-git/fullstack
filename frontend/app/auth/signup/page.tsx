@@ -10,18 +10,18 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { signIn } = useAuth()
+  const { signUp } = useAuth()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await signIn(email, password)
+      await signUp(email, password)
       router.push('/dashboard')
     } finally {
       setIsLoading(false)
@@ -35,8 +35,8 @@ export default function SignInPage() {
       </div>
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Sign In</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,22 +58,23 @@ export default function SignInPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                minLength={6}
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
+                  Creating account...
                 </>
               ) : (
-                'Sign In'
+                'Sign Up'
               )}
             </Button>
             <p className="text-center text-sm">
-              Don't have an account?{' '}
-              <Link href="/auth/signup" className="text-primary hover:underline">
-                Sign Up
+              Already have an account?{' '}
+              <Link href="/auth/signin" className="text-primary hover:underline">
+                Sign In
               </Link>
             </p>
           </form>
