@@ -1,32 +1,38 @@
-'use client'
+"use client";
 
-import { useAuth } from '@/lib/auth-context'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ThemeToggle } from '@/components/theme-toggle'
-import Link from 'next/link'
-import { Loader2 } from 'lucide-react'
+import { useAuth } from "@/lib/auth-context";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const { signIn } = useAuth()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { signIn } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      await signIn(email, password)
-      router.push('/dashboard')
+      await signIn(email, password);
+      router.push("/dashboard");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -36,7 +42,9 @@ export default function SignInPage() {
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardDescription>
+            Enter your credentials to access your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -67,12 +75,15 @@ export default function SignInPage() {
                   Signing in...
                 </>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </Button>
             <p className="text-center text-sm">
-              Don't have an account?{' '}
-              <Link href="/auth/signup" className="text-primary hover:underline">
+              Don't have an account?{" "}
+              <Link
+                href="/auth/signup"
+                className="text-primary hover:underline"
+              >
                 Sign Up
               </Link>
             </p>
@@ -80,6 +91,5 @@ export default function SignInPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-
