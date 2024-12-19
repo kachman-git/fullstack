@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -13,6 +14,8 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
+    // Also set the token in cookies for middleware
+    Cookies.set("token", token, { secure: true, sameSite: "strict" });
   }
   return config;
 });
@@ -22,6 +25,7 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
+      Cookies.remove("token");
       window.location.href = "/auth/signin";
     }
     return Promise.reject(error);

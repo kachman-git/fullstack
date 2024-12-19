@@ -21,8 +21,8 @@ export interface AuthContextType extends AuthState {
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   isAuthenticated: boolean;
+  isLoading?: boolean;
 }
-
 export interface Bookmark {
   id: number;
   title: string;
