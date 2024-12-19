@@ -1,23 +1,35 @@
-'use client'
+"use client";
 
-import { useAuth } from '@/lib/auth-context'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth()
-  const router = useRouter()
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/signin')
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/signin");
+    } else {
+      setIsLoading(false);
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return null
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
   }
 
-  return <>{children}</>
-}
+  if (!isAuthenticated) {
+    return null;
+  }
 
+  return <>{children}</>;
+}

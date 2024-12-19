@@ -17,6 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      setState((prev) => ({ ...prev, token })); // Set token immediately
       fetchUser().catch((error) => {
         if (error instanceof AxiosError && error.response?.status === 401) {
           localStorage.removeItem("token");
